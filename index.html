@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="data/style.css" />
+
+    <script src="https://d3js.org/d3.v4.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <div class="app-container">
+      <div class="Left-Column">
+        <div class="Header">
+          <img
+            src="image/logo_pompidou.png"
+            alt="Description"
+            class="HeaderImage"
+          />
+          <h1>Vue détaillée de la collection design du Centre Pompidou</h1>
+          <h2>
+            Visualisation de la collection de design du Centre
+            Pompidou à Paris, telle qu'elle se présente en 2025. Elle montre
+            chaque objet de la collection, dont la forme est définie par sa date
+            de création et sa date d'acquisition. Le corps de chaque forme
+            indique le domaine de design auquel l'objet appartient.
+          </h2>
+        </div>
+        <div class="filter-panel">
+          <h3>Recherche</h3>
+          <input
+            type="text"
+            id="nomSearch"
+            placeholder="Taper un nom..."
+            style="width: 100%; padding: 6px; font-family: Jost, sans-serif"
+          />
+          <h3>Type de Design</h3>
+          <select id="typeDesignFilter">
+            <option value="All">Tout</option>
+            <option value="Architecture/ Design d'Intérieur">
+              Architecture/ Design d'Intérieur
+            </option>
+            <option value="Mobilier">Mobilier</option>
+            <option value="Design Graphique/ Illustration">
+              Design Graphique/ Illustration
+            </option>
+            <option value="Design d'Objet">Design d'Objet</option>
+            <option value="Design Industriel">Design Industriel</option>
+            <option value="Design des Technologies">
+              Design des Technologies
+            </option>
+            <option value="Design Vestimentaire ">Design Vestimentaire</option>
+          </select>
+
+          <h3>Genre/Groupe</h3>
+          <select id="genderFilter">
+            <option value="All">Tout</option>
+            <option value="Homme">Homme</option>
+            <option value="Femme">Femme</option>
+            <option value="Studio/ Group">Groupe/Studio</option>
+            <option value="Unknown">Inconnue</option>
+          </select>
+
+          <h3>Pays</h3>
+          <select id="nationaliteFilter">
+            <option value="All">Tout</option>
+          </select>
+        </div>
+      </div>
+      <div class="MainBody">
+        <div class="legend">
+          <div class="categorielegende">
+            <div class="element_texte">LEGENDE</div>
+          </div>
+
+          <div class="typeAchat">
+            <div class="categorie">
+              <div class="element_texte">Achat</div>
+              <div class="element_texte">Acquisition</div>
+              <div class="element_texte">Attribution</div>
+              <div class="element_texte">Dation</div>
+            </div>
+
+            <div class="categorieshape">
+              <div class="element_rond" data-acquisition="Achat"></div>
+              <div class="element_rond" data-acquisition="Acquisition"></div>
+              <div class="element_rond" data-acquisition="Attribution"></div>
+              <div class="element_rond" data-acquisition="Dation"></div>
+            </div>
+
+            <div class="categorie">
+              <div class="element_texte">Dépôt</div>
+              <div class="element_texte">Don</div>
+              <div class="element_texte">Donation</div>
+              <div class="element_texte">Etat</div>
+            </div>
+
+            <div class="categorieshape">
+              <div class="element_rond" data-acquisition="Dépôt"></div>
+              <div class="element_rond" data-acquisition="Don"></div>
+              <div class="element_rond" data-acquisition="Donation"></div>
+              <div class="element_rond" data-acquisition="Etat"></div>
+            </div>
+
+            <div class="categorie">
+              <div class="element_texte">Fonds</div>
+              <div class="element_texte">Inscription</div>
+              <div class="element_texte">Legs</div>
+              <div class="element_texte">Autre</div>
+            </div>
+
+            <div class="categorieshape">
+              <div class="element_rond" data-acquisition="Fonds"></div>
+              <div class="element_rond" data-acquisition="Inscription"></div>
+              <div class="element_rond" data-acquisition="Legs"></div>
+              <div class="element_rond" data-acquisition="1"></div>
+            </div>
+            <div class="seperator"></div>
+          </div>
+
+          <div class="typeDesign">
+            <div class="categorie">
+              <div class="element_texte">Design d'Objet</div>
+              <div class="element_texte">Mobilier</div>
+              <div class="element_texte">Design Graphique</div>
+              <div class="element_texte">Design d'Intérieur</div>
+            </div>
+
+            <div class="categorieshape">
+              <div class="element_ligne4"></div>
+              <div class="element_ligne2"></div>
+              <div class="element_ligne3"></div>
+              <div class="element_ligne1"></div>
+            </div>
+
+            <div class="categorie">
+              <div class="element_texte">Design Industriel</div>
+              <div class="element_texte">Design des Technologies</div>
+              <div class="element_texte">Design Vestimentaire</div>
+            </div>
+
+            <div class="categorieshape">
+              <div class="element_ligne5"></div>
+              <div class="element_ligne6"></div>
+              <div class="element_ligne7"></div>
+            </div>
+            <div class="seperator"></div>
+          </div>
+
+          <div class="genre">
+            <div class="categorie">
+              <div class="element_texte">Homme</div>
+              <div class="element_texte">Femme</div>
+              <div class="element_texte">Groupe/Studio</div>
+              <div class="element_texte">Inconnue</div>
+            </div>
+
+            <div class="categorieshape">
+              <div class="element_rond12" data-gender="Homme"></div>
+              <div class="element_rond13" data-gender="Femme"></div>
+              <div class="element_rond14" data-gender="Studio/ Group"></div>
+              <div class="element_rond15" data-gender="Unknown"></div>
+            </div>
+          </div>
+        </div>
+        <div class="frame">
+          <div class="scaleframe">
+            <div id="scale"></div>
+          </div>
+
+          <div class="container">
+            <div class="graph" id="my_dataviz"></div>
+            <div class="top"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <script src="data/script.js"></script>
+</html>
