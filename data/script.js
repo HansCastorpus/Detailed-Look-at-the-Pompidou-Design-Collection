@@ -253,6 +253,14 @@ d3.csv("data/proto.csv", function (data) {
   const natSelect = d3.select("#nationaliteFilter");
   natSelect.selectAll("option.nat").data(nationalities).enter().append("option").attr("class", "nat").attr("value", (d) => d).text((d) => d);
 
+  // Populate DCU multi-select
+  const dcuDates = Array.from(new Set(data.map((d) => d.DCU).filter((d) => d && d !== ""))).sort((a, b) => a - b);
+  buildMultiSelect("dcuOptions", "dcuSearch", "dcuTrigger", "dcuFilterWrapper", dcuDates, "selectedDCU");
+
+  // Populate DAU multi-select
+  const dauDates = Array.from(new Set(data.map((d) => d.DAU).filter((d) => d && d !== ""))).sort((a, b) => a - b);
+  buildMultiSelect("dauOptions", "dauSearch", "dauTrigger", "dauFilterWrapper", dauDates, "selectedDAU");
+
   updateGraph(originalData);
 
   d3.select("#typeDesignFilter").on("change", updateFilters);
@@ -264,6 +272,73 @@ d3.csv("data/proto.csv", function (data) {
   if (originalData.length > 0) {
     showTooltip(originalData[0]);
   }
+});
+
+// Multi-select state
+var selectedDCU = new Set(); // empty = all
+var selectedDAU = new Set(); // empty = all
+
+// Build a multi-select dropdown
+function buildMultiSelect(optionsId, searchId, triggerId, wrapperId, values, stateKey) {
+  const optionsContainer = document.getElementById(optionsId);
+  const searchInput = document.getElementById(searchId);
+  const trigger = document.getElementById(triggerId);
+  const wrapper = document.getElementById(wrapperId);
+
+  function renderOptions(filter) {
+    optionsContainer.innerHTML = "";
+    const filtered = filter ? values.filter(v => String(v).includes(filter)) : values;
+    filtered.forEach(val => {
+      const label = document.createElement("label");
+      label.className = "multi-select-option";
+      const cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.value = val;
+      const state = window[stateKey];
+      cb.checked = state.has(String(val));
+      cb.addEventListener("change", () => {
+        if (cb.checked) state.add(String(val));
+        else state.delete(String(val));
+        updateTriggerLabel(trigger, state);
+        updateFilters();
+      });
+      label.appendChild(cb);
+      label.appendChild(document.createTextNode(val));
+      optionsContainer.appendChild(label);
+    });
+  }
+
+  renderOptions("");
+
+  searchInput.addEventListener("input", () => renderOptions(searchInput.value));
+
+  trigger.addEventListener("click", (e) => {
+    e.stopPropagation();
+    // Close other open dropdowns
+    document.querySelectorAll(".multi-select-wrapper.open").forEach(el => {
+      if (el.id !== wrapperId) el.classList.remove("open");
+    });
+    wrapper.classList.toggle("open");
+    if (wrapper.classList.contains("open")) {
+      searchInput.focus();
+    }
+  });
+}
+
+function updateTriggerLabel(trigger, state) {
+  const label = trigger.querySelector(".multi-select-label");
+  if (state.size === 0) {
+    label.textContent = "Tout";
+  } else if (state.size === 1) {
+    label.textContent = Array.from(state)[0];
+  } else {
+    label.textContent = state.size + " sélectionnés";
+  }
+}
+
+// Close dropdowns when clicking outside
+document.addEventListener("click", () => {
+  document.querySelectorAll(".multi-select-wrapper.open").forEach(el => el.classList.remove("open"));
 });
 
 // updateFilters() and updateGraph() remain unchanged
@@ -288,7 +363,10 @@ function updateFilters() {
     const nameMatch =
       searchValue === "" || d.Nom.toLowerCase().includes(searchValue);
 
-    return typeMatch && genderMatch && natMatch && nameMatch;
+    const dcuMatch = selectedDCU.size === 0 || selectedDCU.has(String(d.DCU));
+    const dauMatch = selectedDAU.size === 0 || selectedDAU.has(String(d.DAU));
+
+    return typeMatch && genderMatch && natMatch && nameMatch && dcuMatch && dauMatch;
   });
 
   updateGraph(filtered);
@@ -457,4 +535,3 @@ function updateGraph(data) {
       .attr("stroke-width", 2);
   });
 }
-

@@ -53,8 +53,8 @@ html {
   display: flex;
   flex-direction: column; /* stack legend + frame vertically */
   align-items: center; /* optional */
-  background-color: var(--data-background-color);
-  border: var(--border-color) var(--border-width) solid;
+  /* background-color: var(--data-background-color); */
+  /* border: var(--border-color) var(--border-width) solid; */
   border-radius: 0px 20px 0px 0px;
 }
 
@@ -158,7 +158,7 @@ h3 {
   color: var(--text-color);
   background: var(--background-color);
   border: var(--border-color) var(--border-width) solid;
-  border-radius: 0px 0px 20px 20px;
+  border-radius: 0px 0px 20px 0px;
 
   opacity: 0;
   pointer-events: none;
@@ -225,7 +225,7 @@ h3 {
   font-size: 20px;
   color: var(--text-color);
   background-color: var(--background-color);
-  border-bottom: var(--border-color) var(--border-width) solid;
+  border: var(--border-color) var(--border-width) solid;
   border-radius: 0px 20px 0px 0px;
 }
 
@@ -417,7 +417,7 @@ h3 {
   color: var(--text-color);
   background-color: var(--background-color);
   border: var(--border-color) var(--border-width) solid;
-  border-radius: 0px 0px 0px 20px;
+  border-radius: 0px 0px 20px 20px;
   width: 250px;
   padding: 10px;
   box-sizing: border-box;
@@ -465,6 +465,126 @@ h3 {
 
 .type {
   text-transform: uppercase;
+}
+
+/* MULTI-SELECT DATE DROPDOWNS */
+
+.multi-select-wrapper {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  font-family: "Jost", sans-serif;
+  font-size: 16px;
+}
+
+.multi-select-trigger {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 6px 4px;
+  border: 1px solid #000000;
+  background-color: #ffffff;
+  cursor: pointer;
+  user-select: none;
+  font-family: "Jost", sans-serif;
+  font-size: 16px;
+  color: #333;
+}
+
+.multi-select-trigger:hover {
+  outline: 2px solid #000000;
+}
+
+.multi-select-wrapper.open .multi-select-trigger {
+  outline: 2px solid #000000;
+}
+
+.multi-select-arrow {
+  font-size: 12px;
+  transition: transform 0.15s ease;
+  flex-shrink: 0;
+  margin-left: 4px;
+  color: #000;
+}
+
+.multi-select-wrapper.open .multi-select-arrow {
+  transform: rotate(180deg);
+}
+
+.multi-select-label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+}
+
+.multi-select-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  box-sizing: border-box;
+  background: #ffffff;
+  border: 1px solid #000000;
+  border-top: none;
+  z-index: 9999;
+  box-shadow: 2px 4px 8px rgba(0,0,0,0.25);
+}
+
+.multi-select-wrapper.open .multi-select-dropdown {
+  display: block;
+}
+
+.multi-select-search-wrap {
+  padding: 6px 4px;
+  border-bottom: 1px solid #ccc;
+}
+
+.multi-select-search {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 4px 4px;
+  font-family: "Jost", sans-serif;
+  font-size: 14px;
+  border: 1px solid #999;
+  outline: none;
+}
+
+.multi-select-search:focus {
+  outline: 2px solid #000000;
+}
+
+.multi-select-options {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.multi-select-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 8px;
+  cursor: pointer;
+  font-family: "Jost", sans-serif;
+  font-size: 15px;
+  color: var(--text-color);
+}
+
+.multi-select-option:hover {
+  background-color: #f0f0f0;
+}
+
+.multi-select-option input[type="checkbox"] {
+  accent-color: #000;
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  cursor: pointer;
 }
 
 /* SCALE RESPONSIVNESS */
