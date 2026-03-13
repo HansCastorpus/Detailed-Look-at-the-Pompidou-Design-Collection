@@ -188,37 +188,108 @@ var radiusOn = 12;
 var radiusOff = 8;
 var duration = 100;
 
+// Returns SVG <pattern> definitions as a string for use in tooltip inline SVGs
+function svgPatternDefs() {
+  function halfLR(id, a, b) {
+    return `<pattern id="tt-${id}" patternUnits="objectBoundingBox" patternContentUnits="objectBoundingBox" width="1" height="1">
+      <rect x="0" y="0" width=".5" height="1" fill="${a}"/>
+      <rect x=".5" y="0" width=".5" height="1" fill="${b}"/>
+    </pattern>`;
+  }
+  function halfTB(id, a, b) {
+    return `<pattern id="tt-${id}" patternUnits="objectBoundingBox" patternContentUnits="objectBoundingBox" width="1" height="1">
+      <rect x="0" y="0" width="1" height=".5" fill="${a}"/>
+      <rect x="0" y=".5" width="1" height=".5" fill="${b}"/>
+    </pattern>`;
+  }
+  function quarter(id, c1, c2, c3, c4) {
+    return `<pattern id="tt-${id}" patternUnits="objectBoundingBox" patternContentUnits="objectBoundingBox" width="1" height="1">
+      <rect x="0" y="0" width=".5" height=".5" fill="${c1}"/>
+      <rect x=".5" y="0" width=".5" height=".5" fill="${c2}"/>
+      <rect x="0" y=".5" width=".5" height=".5" fill="${c3}"/>
+      <rect x=".5" y=".5" width=".5" height=".5" fill="${c4}"/>
+    </pattern>`;
+  }
+  return [
+    halfLR("achat","#ffffff","#c51130"),
+    halfTB("acquisition","#ffffff","#231f20"),
+    quarter("attribution","#241f21","#fcba2f","#ca1131","#012d6e"),
+    quarter("dation","#ffffff","#ca1131","#ca1131","#ffffff"),
+    halfLR("depot","#ca1131","#fcba2f"),
+    quarter("don","#012d6e","#fcba2f","#fcba2f","#012d6e"),
+    halfLR("donation","#012d6e","#fcba2f"),
+    halfTB("etat","#012d6e","#ffffff"),
+    quarter("fonds","#ffffff","#012d6e","#012d6e","#ffffff"),
+    halfLR("inscription","#241f21","#c51130"),
+    halfLR("legs","#012d6e","#fcba2f"),
+    quarter("autre","#241f21","#ffffff","#ffffff","#241f21"),
+    quarter("man","#012d6e","#0a60c6","#0a60c6","#012d6e"),
+    quarter("woman","#c51130","#70061d","#70061d","#c51130"),
+    quarter("group","#fc5832","#fcba2f","#fcba2f","#fc5832"),
+    quarter("unknown","#aaaaaa","#ffffff","#ffffff","#aaaaaa"),
+  ].join("");
+}
+
 // Tooltip functions
 function showTooltip(d) {
+  // Map acquisition type to tooltip-local pattern id
+  const acqKeyMap = {
+    "Achat": "tt-achat", "Acquisition": "tt-acquisition", "Attribution": "tt-attribution",
+    "Dation": "tt-dation", "Dépôt": "tt-depot", "Don": "tt-don",
+    "Donation": "tt-donation", "Etat": "tt-etat", "Fonds": "tt-fonds",
+    "Inscription": "tt-inscription", "Legs": "tt-legs"
+  };
+  const genderKeyMap = {
+    "Homme": "tt-man", "Femme": "tt-woman", "Studio/ Group": "tt-group", "Unknown": "tt-unknown"
+  };
+
+  const acqFill = "url(#" + (acqKeyMap[d.TypeAcquisition] || "tt-autre") + ")";
+  const genFill = "url(#" + (genderKeyMap[d.Sexe] || "tt-unknown") + ")";
+  const lineColor = colorDesignType(d.TypeDesign);
+
+  function svgCircle(fill) {
+    return `<svg width="18" height="18" style="vertical-align:middle;flex-shrink:0" xmlns="http://www.w3.org/2000/svg">
+      <defs>${svgPatternDefs()}</defs>
+      <circle cx="9" cy="9" r="7" fill="${fill}" stroke="#000" stroke-width="1.5"/>
+    </svg>`;
+  }
+
+  function svgLine(color) {
+    return `<svg width="32" height="10" style="vertical-align:middle;flex-shrink:0" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="1" width="32" height="8" rx="1" fill="${color}"/>
+    </svg>`;
+  }
+
   tooltip.html(`
     <div class="tooltip-column">
       <div class="image">
         <img src="image/${d.Image}" width="200" height="150">
       </div>
-      <div class="type"><strong>${d.TypeDesign}</strong> </div>
-    </div>
-    <div class="tooltip-column">
-      <strong>Creation:</strong> ${d.DCU}<br>
-      <strong>Acquisition:</strong> ${d.DAU}<br>
-      ${d.Acquisition}<div class="rondplein"></div>
-    </div>
-    <div class="tooltip-column">
-      <strong>${d.Titre}</strong><br>
-      ${d.TypeDesign}
-      <div class="rondbarre">
-        <div class="rond"></div><div class="barre"></div><div class="rond"></div>
-      </div>
-      ${d.MST}
-      ${d.Dimensions}
+      <div class="type"><strong>${d.TypeDesign}</strong></div>
     </div>
     <div class="tooltip-column">
       <div class="designer">
-        <strong>${d.Nom}</strong><div class="rondplein"></div>
+        <strong>${d.Nom}</strong>
       </div>
-      <div class="flag"><img src="image/${d.flag}" width="auto" height="25" border="0zpx black solid"></div>
+      ${svgCircle(genFill)}
+      <div class="flag"><img src="image/${d.flag}" width="auto" height="25"></div>
       <div>${d.Nationalite}</div>
-      _____ <br>
+      _____<br>
       ${d.DDN}
+    </div>
+    <div class="tooltip-column">
+      <strong>${d.Titre}</strong><br>
+      <div style="display:flex;align-items:center;gap:6px;margin-top:4px;margin-bottom:4px">
+        ${svgLine(lineColor)} ${d.TypeDesign}
+      </div>
+      ${d.MST}<br>${d.Dimensions}
+    </div>
+    <div class="tooltip-column">
+      <strong>Création:</strong> ${d.DCU}<br>
+      <strong>Acquisition:</strong> ${d.DAU}<br>
+      <div style="display:flex;align-items:center;gap:6px;margin-top:6px">
+        ${svgCircle(acqFill)} ${d.TypeAcquisition || d.Acquisition || "—"}
+      </div>
     </div>
   `);
 
@@ -530,7 +601,7 @@ function updateGraph(data) {
     .attr("cx", (d) => x(d.DAU))
     .attr("cy", (d, i) => yPos(d, i))
     .attr("r", radiusOff)
-    .attr("fill", (d) => colorGendre(d.Sexe))
+    .attr("fill", (d) => colorAcquisitionType(d.TypeAcquisition))
     .attr("stroke", (d) => colorDesignType(d.TypeDesign))
     .style("stroke-width", 3)
     .style("vector-effect", "non-scaling-stroke")
@@ -554,7 +625,7 @@ function updateGraph(data) {
     .attr("cx", (d) => x(d.DCU))
     .attr("cy", (d, i) => yPos(d, i))
     .attr("r", radiusOff)
-    .attr("fill", (d) => colorAcquisitionType(d.TypeAcquisition))
+    .attr("fill", (d) => colorGendre(d.Sexe))
     .attr("stroke", (d) => colorDesignType(d.TypeDesign))
     .style("stroke-width", 3)
     .style("vector-effect", "non-scaling-stroke")

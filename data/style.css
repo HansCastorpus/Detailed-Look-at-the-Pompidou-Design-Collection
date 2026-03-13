@@ -10,8 +10,9 @@
 
 :root {
   --background-color: #78837b;
+  --background-color-elements: #8b948d;
   --text-color: #0e1d2e;
-  --border-color: #313a35;
+  --border-color: #1e2c42;
   --data-background-color: #1e2c42;
   --border-width: 1px;
   --border-radius: 5px;
@@ -74,10 +75,6 @@ h2 {
 h3 {
   margin: 0;
   padding: 0;
-  font-size: 14px;
-  text-transform: uppercase;
-  color: var(--text-color);
-
 }
 
 .frame {
@@ -110,8 +107,6 @@ h3 {
   flex-direction: column;
   justify-content: center;
   background-color: var(--data-background-color);
-  border-left: var(--border-color) 1px solid;
-  border-right: var(--border-color) 12px solid;
   width: 1400px;
   padding: 0;
   margin: 0;
@@ -162,7 +157,7 @@ h3 {
   font-size: 20px;
 
   color: var(--text-color);
-  background: var(--background-color);
+  background: var(--background-color-elements);
   border: var(--border-color) var(--border-width) solid;
   border-radius: 0px 0px 20px 0px;
 
@@ -230,14 +225,13 @@ h3 {
   font-family: "Jost", sans-serif;
   font-size: 20px;
   color: var(--text-color);
-  background-color: var(--background-color);
+  background-color: var(--background-color-elements);
   border: var(--border-color) var(--border-width) solid;
   border-radius: 0px 20px 0px 0px;
 }
 
 .typeAchat {
   display: flex;
-  padding-left: 57px;
 }
 
 .typeDesign {
@@ -247,6 +241,8 @@ h3 {
 
 .genre {
   display: flex;
+  padding-left: 100px;
+
 }
 
 .seperator {
@@ -409,7 +405,7 @@ h3 {
   padding: 10px;
   font-family: "Jost";
   color: var(--text-color);
-  background-color: var(--background-color);
+  background-color: var(--background-color-elements);
   border-radius: 20px 0px 0px 0px;
 }
 
@@ -421,7 +417,7 @@ h3 {
 
 .filter-panel {
   color: var(--text-color);
-  background-color: var(--background-color);
+  background-color: var(--background-color-elements);
   border: var(--border-color) var(--border-width) solid;
   border-radius: 0px 0px 20px 20px;
   width: 250px;
