@@ -9,9 +9,10 @@
 } */
 
 :root {
-  --background-color: #221e1f;
-  --text-color: #d4cfc8;
-  --border-color: #a19d94;
+  --background-color: #78837b;
+  --text-color: #0e1d2e;
+  --border-color: #313a35;
+  --data-background-color: #1e2c42;
   --border-width: 1px;
   --border-radius: 5px;
 }
@@ -52,7 +53,7 @@ html {
   display: flex;
   flex-direction: column; /* stack legend + frame vertically */
   align-items: center; /* optional */
-  background-color: #0c1525;
+  background-color: var(--data-background-color);
   border: var(--border-color) var(--border-width) solid;
   border-radius: 0px 20px 0px 0px;
 }
@@ -104,7 +105,7 @@ h3 {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background-color: #0c1525;
+  background-color: var(--data-background-color);
   width: 1400px;
   padding: 0;
   margin: 0;
