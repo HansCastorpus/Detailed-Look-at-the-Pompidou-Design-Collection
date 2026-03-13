@@ -467,6 +467,80 @@ h3 {
   text-transform: uppercase;
 }
 
+.total-results {
+  font-family: "Jost", sans-serif;
+  font-size: 13px;
+  color: var(--text-color);
+  opacity: 0.7;
+  text-align: right;
+  padding: 2px 2px 6px 0;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 4px;
+}
+
+.total-results span {
+  font-weight: 700;
+  font-size: 15px;
+  opacity: 1;
+}
+
+/* FILTER HEADER ROW (label + count + reset) */
+
+.filter-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  margin-top: 8px;
+  margin-bottom: 2px;
+}
+
+.filter-header h3 {
+  margin: 0;
+  flex: 1;
+}
+
+.filter-count {
+  display: none;
+  background-color: var(--border-color);
+  color: #e8e8e0;
+  font-family: "Jost", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 10px;
+  padding: 1px 7px;
+  min-width: 18px;
+  text-align: center;
+  line-height: 16px;
+}
+
+.filter-count.visible {
+  display: inline-block;
+}
+
+.filter-reset {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-color);
+  font-size: 14px;
+  line-height: 1;
+  padding: 0 2px;
+  opacity: 0.55;
+  font-family: "Jost", sans-serif;
+  transition: opacity 0.15s;
+  flex-shrink: 0;
+}
+
+.filter-reset:hover {
+  opacity: 1;
+}
+
+.filter-reset.visible {
+  display: inline-block;
+}
+
 /* MULTI-SELECT DATE DROPDOWNS */
 
 .multi-select-wrapper {

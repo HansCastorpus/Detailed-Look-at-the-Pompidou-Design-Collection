@@ -262,11 +262,7 @@ d3.csv("data/proto.csv", function (data) {
   buildMultiSelect("dauOptions", "dauSearch", "dauTrigger", "dauFilterWrapper", dauDates, "selectedDAU");
 
   updateGraph(originalData);
-
-  d3.select("#typeDesignFilter").on("change", updateFilters);
-  d3.select("#genderFilter").on("change", updateFilters);
-  d3.select("#nomSearch").on("input", updateFilters);
-  d3.select("#nationaliteFilter").on("change", updateFilters);
+  document.getElementById("totalCount").textContent = originalData.length;
 
   // SHOW TOOLTIP FOR FIRST ROW ON PAGE LOAD
   if (originalData.length > 0) {
@@ -341,6 +337,95 @@ document.addEventListener("click", () => {
   document.querySelectorAll(".multi-select-wrapper.open").forEach(el => el.classList.remove("open"));
 });
 
+// --- Count badge + reset button helpers ---
+
+function setFilterBadge(countId, resetId, count, isActive) {
+  const countEl = document.getElementById(countId);
+  const resetEl = document.getElementById(resetId);
+  if (isActive) {
+    countEl.textContent = count;
+    countEl.classList.add("visible");
+    resetEl.classList.add("visible");
+  } else {
+    countEl.textContent = "";
+    countEl.classList.remove("visible");
+    resetEl.classList.remove("visible");
+  }
+}
+
+// Called after every filter change — computes filtered count and updates all badges
+function updateAllBadges(filtered) {
+  const typeVal = document.getElementById("typeDesignFilter").value;
+  const genderVal = document.getElementById("genderFilter").value;
+  const natVal = document.getElementById("nationaliteFilter").value;
+  const searchVal = document.getElementById("nomSearch").value.trim();
+
+  document.getElementById("totalCount").textContent = filtered.length;
+
+  setFilterBadge("typeCount",   "typeReset",   filtered.length, typeVal !== "All");
+  setFilterBadge("genderCount", "genderReset", filtered.length, genderVal !== "All");
+  setFilterBadge("natCount",    "natReset",    filtered.length, natVal !== "All");
+  setFilterBadge("nomCount",    "nomReset",    filtered.length, searchVal !== "");
+  setFilterBadge("dcuCount",    "dcuReset",    filtered.length, selectedDCU.size > 0);
+  setFilterBadge("dauCount",    "dauReset",    filtered.length, selectedDAU.size > 0);
+}
+
+// Wire up simple select resets
+document.getElementById("nomReset").addEventListener("click", (e) => {
+  e.stopPropagation();
+  document.getElementById("nomSearch").value = "";
+  updateFilters();
+});
+
+document.getElementById("nomSearch").addEventListener("input", () => {
+  updateFilters();
+});
+
+document.getElementById("typeReset").addEventListener("click", (e) => {
+  e.stopPropagation();
+  document.getElementById("typeDesignFilter").value = "All";
+  updateFilters();
+});
+document.getElementById("typeDesignFilter").addEventListener("change", () => {
+  updateFilters();
+});
+
+document.getElementById("genderReset").addEventListener("click", (e) => {
+  e.stopPropagation();
+  document.getElementById("genderFilter").value = "All";
+  updateFilters();
+});
+document.getElementById("genderFilter").addEventListener("change", () => {
+  updateFilters();
+});
+
+document.getElementById("natReset").addEventListener("click", (e) => {
+  e.stopPropagation();
+  document.getElementById("nationaliteFilter").value = "All";
+  updateFilters();
+});
+document.getElementById("nationaliteFilter").addEventListener("change", () => {
+  updateFilters();
+});
+
+document.getElementById("dcuReset").addEventListener("click", (e) => {
+  e.stopPropagation();
+  selectedDCU.clear();
+  const trigger = document.getElementById("dcuTrigger");
+  updateTriggerLabel(trigger, selectedDCU);
+  document.querySelectorAll("#dcuOptions input[type=checkbox]").forEach(cb => cb.checked = false);
+  updateFilters();
+});
+
+document.getElementById("dauReset").addEventListener("click", (e) => {
+  e.stopPropagation();
+  selectedDAU.clear();
+  const trigger = document.getElementById("dauTrigger");
+  updateTriggerLabel(trigger, selectedDAU);
+  document.querySelectorAll("#dauOptions input[type=checkbox]").forEach(cb => cb.checked = false);
+  updateFilters();
+});
+
 // updateFilters() and updateGraph() remain unchanged
 
 function updateFilters() {
@@ -370,6 +455,7 @@ function updateFilters() {
   });
 
   updateGraph(filtered);
+  updateAllBadges(filtered);
 }
 
 // Update graph

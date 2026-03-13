@@ -33,14 +33,25 @@
           </h2>
         </div>
         <div class="filter-panel">
-          <h3>Recherche</h3>
+          <div class="total-results">
+            <span id="totalCount">—</span> résultats
+          </div>
+          <div class="filter-header">
+            <h3>Recherche</h3>
+            <span class="filter-count" id="nomCount"></span>
+            <button class="filter-reset" id="nomReset" title="Réinitialiser">✕</button>
+          </div>
           <input
             type="text"
             id="nomSearch"
             placeholder="Taper un nom..."
             style="width: 100%; padding: 6px; font-family: Jost, sans-serif"
           />
-          <h3>Type de Design</h3>
+          <div class="filter-header">
+            <h3>Type de Design</h3>
+            <span class="filter-count" id="typeCount"></span>
+            <button class="filter-reset" id="typeReset" title="Réinitialiser">✕</button>
+          </div>
           <select id="typeDesignFilter">
             <option value="All">Tout</option>
             <option value="Architecture/ Design d'Intérieur">
@@ -58,7 +69,11 @@
             <option value="Design Vestimentaire ">Design Vestimentaire</option>
           </select>
 
-          <h3>Genre/Groupe</h3>
+          <div class="filter-header">
+            <h3>Genre/Groupe</h3>
+            <span class="filter-count" id="genderCount"></span>
+            <button class="filter-reset" id="genderReset" title="Réinitialiser">✕</button>
+          </div>
           <select id="genderFilter">
             <option value="All">Tout</option>
             <option value="Homme">Homme</option>
@@ -67,12 +82,20 @@
             <option value="Unknown">Inconnue</option>
           </select>
 
-          <h3>Pays</h3>
+          <div class="filter-header">
+            <h3>Pays</h3>
+            <span class="filter-count" id="natCount"></span>
+            <button class="filter-reset" id="natReset" title="Réinitialiser">✕</button>
+          </div>
           <select id="nationaliteFilter">
             <option value="All">Tout</option>
           </select>
 
-          <h3>Date de Création</h3>
+          <div class="filter-header">
+            <h3>Date de Création</h3>
+            <span class="filter-count" id="dcuCount"></span>
+            <button class="filter-reset" id="dcuReset" title="Réinitialiser">✕</button>
+          </div>
           <div class="multi-select-wrapper" id="dcuFilterWrapper">
             <div class="multi-select-trigger" id="dcuTrigger">
               <span class="multi-select-label">Tout</span>
@@ -86,7 +109,11 @@
             </div>
           </div>
 
-          <h3>Date d'Acquisition</h3>
+          <div class="filter-header">
+            <h3>Date d'Acquisition</h3>
+            <span class="filter-count" id="dauCount"></span>
+            <button class="filter-reset" id="dauReset" title="Réinitialiser">✕</button>
+          </div>
           <div class="multi-select-wrapper" id="dauFilterWrapper">
             <div class="multi-select-trigger" id="dauTrigger">
               <span class="multi-select-label">Tout</span>
